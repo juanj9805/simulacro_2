@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using simulationTest.Data;
+using simulationTest.Interfaces;
 using simulationTest.Models;
 using simulationTest.Services;
 
@@ -10,6 +11,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<MysqlDbcontext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("MysqlConnection"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MysqlConnection"))));
+
+var emailSettings = builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>()!;
+builder.Services.AddSingleton(emailSettings);
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddScoped<OwnerService>();
 builder.Services.AddScoped<MedicineService>();

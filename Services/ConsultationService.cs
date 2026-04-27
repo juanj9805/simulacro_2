@@ -8,10 +8,12 @@ namespace simulationTest.Services;
 public class ConsultationService : ICrudService<Consultation>
 {
     private readonly MysqlDbcontext _context;
+    private readonly IEmailService _emailService;
 
-    public ConsultationService(MysqlDbcontext context)
+    public ConsultationService(MysqlDbcontext context, IEmailService emailService)
     {
         _context = context;
+        _emailService = emailService;
     }
 
     public Consultation Create(Consultation entity)
@@ -20,6 +22,12 @@ public class ConsultationService : ICrudService<Consultation>
         {
             _context.consultations.Add(entity);
             _context.SaveChanges();
+
+            _ = _emailService.SendAsync(
+                "Appointment Created - VetCare",
+                $"A new appointment has been scheduled.\n\nReason: {entity.Reason}\nDate: {entity.DateStart:yyyy-MM-dd HH:mm} to {entity.DateEnd:HH:mm}\nStatus: {entity.Status}"
+            );
+
             return entity;
         }
         catch (DbUpdateException ex)
@@ -74,6 +82,8 @@ public class ConsultationService : ICrudService<Consultation>
             var existing = await _context.consultations.FindAsync(entity.Id)
                 ?? throw new KeyNotFoundException($"Consultation with id {entity.Id} not found.");
 
+            var previousStatus = existing.Status;
+
             existing.Reason = entity.Reason;
             existing.IdPet = entity.IdPet;
             existing.IdVeterinary = entity.IdVeterinary;
@@ -82,6 +92,15 @@ public class ConsultationService : ICrudService<Consultation>
             existing.Status = entity.Status;
 
             await _context.SaveChangesAsync();
+
+            if (previousStatus != Status.Canceled && existing.Status == Status.Canceled)
+            {
+                _ = _emailService.SendAsync(
+                    "Appointment Cancelled - VetCare",
+                    $"An appointment has been cancelled.\n\nReason: {existing.Reason}\nDate: {existing.DateStart:yyyy-MM-dd HH:mm}"
+                );
+            }
+
             return existing;
         }
         catch (KeyNotFoundException)

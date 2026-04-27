@@ -8,10 +8,12 @@ namespace simulationTest.Services;
 public class TreatmentService : ICrudService<Treatment>
 {
     private readonly MysqlDbcontext _context;
+    private readonly IEmailService _emailService;
 
-    public TreatmentService(MysqlDbcontext context)
+    public TreatmentService(MysqlDbcontext context, IEmailService emailService)
     {
         _context = context;
+        _emailService = emailService;
     }
 
     public Treatment Create(Treatment entity)
@@ -20,6 +22,12 @@ public class TreatmentService : ICrudService<Treatment>
         {
             _context.treatments.Add(entity);
             _context.SaveChanges();
+
+            _ = _emailService.SendAsync(
+                "Treatment Assigned - VetCare",
+                $"A new treatment has been assigned.\n\nDescription: {entity.Description}\nConsultation ID: {entity.IdConsultation}\nDate: {entity.CreateAt:yyyy-MM-dd HH:mm}"
+            );
+
             return entity;
         }
         catch (DbUpdateException ex)
