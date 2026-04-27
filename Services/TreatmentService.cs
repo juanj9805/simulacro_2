@@ -18,6 +18,12 @@ public class TreatmentService : ICrudService<Treatment>
 
     public Treatment Create(Treatment entity)
     {
+        var consultation = _context.consultations.Find(entity.IdConsultation)
+            ?? throw new InvalidOperationException("Consultation not found.");
+
+        if (consultation.Status != Status.Finished)
+            throw new InvalidOperationException("Treatments can only be registered for finished consultations.");
+
         try
         {
             _context.treatments.Add(entity);
@@ -65,10 +71,7 @@ public class TreatmentService : ICrudService<Treatment>
 
             return treatment;
         }
-        catch (KeyNotFoundException)
-        {
-            throw;
-        }
+        catch (KeyNotFoundException) { throw; }
         catch (Exception ex)
         {
             throw new InvalidOperationException("Could not retrieve treatment.", ex);
@@ -88,10 +91,7 @@ public class TreatmentService : ICrudService<Treatment>
             await _context.SaveChangesAsync();
             return existing;
         }
-        catch (KeyNotFoundException)
-        {
-            throw;
-        }
+        catch (KeyNotFoundException) { throw; }
         catch (DbUpdateException ex)
         {
             throw new InvalidOperationException("Could not update treatment.", ex);
@@ -109,10 +109,7 @@ public class TreatmentService : ICrudService<Treatment>
             await _context.SaveChangesAsync();
             return treatment;
         }
-        catch (KeyNotFoundException)
-        {
-            throw;
-        }
+        catch (KeyNotFoundException) { throw; }
         catch (DbUpdateException ex)
         {
             throw new InvalidOperationException("Could not delete treatment.", ex);

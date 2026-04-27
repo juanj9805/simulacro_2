@@ -1,13 +1,14 @@
-﻿@model IEnumerable<Medicine>
+@model IEnumerable<Medicine>
 
 <div class="row">
-    <a class="btn btn-success" asp-controller="Medicine" asp-action="Create">Create</a>
+    <a class="btn btn-success mb-3" asp-controller="Medicine" asp-action="Create">Create</a>
     <div class="col-12">
         <table class="table table-striped">
             <thead>
-            <th>ID</th>
-            <th>NAME</th>
-            <th class="text-end">Actions</th>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>STOCK</th>
+                <th class="text-end">Actions</th>
             </thead>
             <tbody>
             @foreach (var m in Model)
@@ -15,9 +16,12 @@
                 <tr>
                     <td>@m.Id</td>
                     <td>@m.Name</td>
+                    <td>@m.Stock</td>
                     <td class="text-end">
-                        <a class="btn btn-outline-warning" asp-controller="Medicine" asp-action="Index">Edit</a>
-                        <a class="btn btn-outline-danger" asp-controller="Medicine" asp-action="Index">Delete</a>
+                        <a class="btn btn-outline-warning" asp-controller="Medicine" asp-action="Update" asp-route-id="@m.Id">Edit</a>
+                        <form asp-controller="Medicine" asp-action="Delete" asp-route-id="@m.Id" method="post" style="display:inline">
+                            <button type="submit" class="btn btn-outline-danger">Delete</button>
+                        </form>
                     </td>
                 </tr>
             }

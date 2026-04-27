@@ -1,6 +1,6 @@
 ﻿namespace simulationTest.Models;
 
-public enum Status {Scheduled, Finished, Canceled}
+public enum Status { Scheduled, Finished, Canceled, NoShow }
 public class Consultation
 {
     public int Id { get; set; }

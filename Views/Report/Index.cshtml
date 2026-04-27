@@ -1,0 +1,63 @@
+<div class="row g-4">
+
+    <div class="col-6">
+        <h5>Top Veterinaries by Appointments</h5>
+        <table class="table table-striped">
+            <thead><th>VETERINARY</th><th>APPOINTMENTS</th></thead>
+            <tbody>
+            @foreach (var item in ViewBag.TopVets)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Count</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-6">
+        <h5>Most Attended Pets</h5>
+        <table class="table table-striped">
+            <thead><th>PET</th><th>CONSULTATIONS</th></thead>
+            <tbody>
+            @foreach (var item in ViewBag.TopPets)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Count</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-6">
+        <h5>Most Used Medicines</h5>
+        <table class="table table-striped">
+            <thead><th>MEDICINE</th><th>USES</th></thead>
+            <tbody>
+            @foreach (var item in ViewBag.TopMedicines)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Count</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-6">
+        <h5>No-Show Rate</h5>
+        <table class="table table-striped">
+            <thead><th>METRIC</th><th>VALUE</th></thead>
+            <tbody>
+                <tr><td>Total Appointments</td><td>@ViewBag.Total</td></tr>
+                <tr><td>No-Shows</td><td>@ViewBag.NoShows</td></tr>
+                <tr><td>No-Show Rate</td><td>@ViewBag.NoShowRate%</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

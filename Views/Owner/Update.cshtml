@@ -1,12 +1,25 @@
-﻿@model Owner
+@model Owner
 
 <div class="row">
     <div class="col-12">
-        <form action="" method="post">
-            <input type="text" class="form-control">
-            <label for="" class="form-label"></label>
-            <button class="btn btn-success">Create</button>
+        <form asp-controller="Owner" asp-action="Update" method="post">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+            <input asp-for="Id" type="hidden">
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" type="text" class="form-control">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Phone" class="form-label">Phone</label>
+                <input asp-for="Phone" type="text" class="form-control">
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <button class="btn btn-warning">Update</button>
+            <a class="btn btn-secondary ms-2" asp-controller="Owner" asp-action="Index">Cancel</a>
         </form>
-        
     </div>
 </div>

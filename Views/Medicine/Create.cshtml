@@ -1,11 +1,24 @@
-﻿@model Medicine
+@model Medicine
 
 <div class="row">
     <div class="col-12">
         <form asp-controller="Medicine" asp-action="Create" method="post">
-            <label asp-for="Name" for="" class="form-label">Name</label>
-            <input asp-for="Name" type="text" class="form-control">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" type="text" class="form-control">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Stock" class="form-label">Stock</label>
+                <input asp-for="Stock" type="number" class="form-control">
+                <span asp-validation-for="Stock" class="text-danger"></span>
+            </div>
+
             <button class="btn btn-success">Create</button>
+            <a class="btn btn-secondary ms-2" asp-controller="Medicine" asp-action="Index">Cancel</a>
         </form>
     </div>
 </div>

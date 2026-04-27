@@ -1,13 +1,17 @@
-﻿@model IEnumerable<Pet>
+@model IEnumerable<Pet>
 
 <div class="row">
-    <a class="btn btn-success" asp-controller="Pet" asp-action="Create">Create</a>
+    <a class="btn btn-success mb-3" asp-controller="Pet" asp-action="Create">Create</a>
     <div class="col-12">
         <table class="table table-striped">
             <thead>
-            <th>ID</th>
-            <th>NAME</th>
-            <th class="text-end">Actions</th>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>SPECIES</th>
+                <th>BREED</th>
+                <th>AGE</th>
+                <th>OWNER</th>
+                <th class="text-end">Actions</th>
             </thead>
             <tbody>
             @foreach (var p in Model)
@@ -15,9 +19,16 @@
                 <tr>
                     <td>@p.Id</td>
                     <td>@p.Name</td>
+                    <td>@p.Species</td>
+                    <td>@p.Breed</td>
+                    <td>@p.Age</td>
+                    <td>@p.Owner?.Name</td>
                     <td class="text-end">
-                        <a class="btn btn-outline-warning" asp-controller="Pet" asp-action="Index">Edit</a>
-                        <a class="btn btn-outline-danger" asp-controller="Pet" asp-action="Index">Delete</a>
+                        <a class="btn btn-outline-info" asp-controller="Pet" asp-action="History" asp-route-id="@p.Id">History</a>
+                        <a class="btn btn-outline-warning" asp-controller="Pet" asp-action="Update" asp-route-id="@p.Id">Edit</a>
+                        <form asp-controller="Pet" asp-action="Delete" asp-route-id="@p.Id" method="post" style="display:inline">
+                            <button type="submit" class="btn btn-outline-danger">Delete</button>
+                        </form>
                     </td>
                 </tr>
             }

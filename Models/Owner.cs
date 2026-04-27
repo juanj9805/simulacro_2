@@ -7,5 +7,5 @@ public class Owner
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;
-    public IEnumerable<Pet> Pets { get; set; } = [];
+    public List<Pet> Pets { get; set; } = [];
 }

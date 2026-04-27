@@ -1,0 +1,37 @@
+@{
+    var pet = (Pet)ViewBag.Pet;
+    var consultations = (IEnumerable<Consultation>)ViewBag.Consultations;
+    var treatments = (IEnumerable<Treatment>)ViewBag.Treatments;
+}
+
+<div class="row">
+    <div class="col-12 mb-3">
+        <h5>@pet.Name — @pet.Species — @pet.Breed</h5>
+        <a class="btn btn-secondary" asp-controller="Pet" asp-action="Index">Back</a>
+    </div>
+
+    <div class="col-12">
+        <table class="table table-striped">
+            <thead>
+                <th>DATE</th>
+                <th>REASON</th>
+                <th>VETERINARY</th>
+                <th>STATUS</th>
+                <th>TREATMENT</th>
+            </thead>
+            <tbody>
+            @foreach (var c in consultations)
+            {
+                var treatment = treatments.FirstOrDefault(t => t.IdConsultation == c.Id);
+                <tr>
+                    <td>@c.DateStart.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@c.Reason</td>
+                    <td>@c.Veterinary?.Name</td>
+                    <td>@c.Status</td>
+                    <td>@(treatment?.Description ?? "-")</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

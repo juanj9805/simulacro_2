@@ -1,11 +1,54 @@
-﻿@model Pet
+@model Pet
 
 <div class="row">
     <div class="col-12">
-        <form asp-controller="Pet" asp-action="Create" method="post">
-            <label asp-for="Name" for="" class="form-label">Name</label>
-            <input asp-for="Name" type="text" class="form-control">
-            <button class="btn btn-success">Create</button>
+        <form asp-controller="Pet" asp-action="Update" method="post">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+            <input asp-for="Id" type="hidden">
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" type="text" class="form-control">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="IdOwner" class="form-label">Owner</label>
+                <select asp-for="IdOwner" class="form-select">
+                    @foreach (var owner in (IEnumerable<Owner>)ViewBag.Owners)
+                    {
+                        if (Model.IdOwner == owner.Id)
+                        {
+                            <option value="@owner.Id" selected>@owner.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@owner.Id">@owner.Name</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="IdOwner" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Species" class="form-label">Species</label>
+                <select asp-for="Species" asp-items="Html.GetEnumSelectList<Species>()" class="form-select"></select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Breed" class="form-label">Breed</label>
+                <input asp-for="Breed" type="text" class="form-control">
+                <span asp-validation-for="Breed" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Age" class="form-label">Age</label>
+                <input asp-for="Age" type="number" class="form-control">
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+
+            <button class="btn btn-warning">Update</button>
+            <a class="btn btn-secondary ms-2" asp-controller="Pet" asp-action="Index">Cancel</a>
         </form>
     </div>
 </div>

@@ -1,11 +1,25 @@
-﻿@model Veterinary
+@model Veterinary
 
 <div class="row">
     <div class="col-12">
-        <form asp-controller="Veterinary" asp-action="Create" method="post">
-            <label asp-for="Name" for="" class="form-label">Name</label>
-            <input asp-for="Name" type="text" class="form-control">
-            <button class="btn btn-success">Create</button>
+        <form asp-controller="Veterinary" asp-action="Update" method="post">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+            <input asp-for="Id" type="hidden">
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" type="text" class="form-control">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Speciality" class="form-label">Speciality</label>
+                <input asp-for="Speciality" type="text" class="form-control">
+                <span asp-validation-for="Speciality" class="text-danger"></span>
+            </div>
+
+            <button class="btn btn-warning">Update</button>
+            <a class="btn btn-secondary ms-2" asp-controller="Veterinary" asp-action="Index">Cancel</a>
         </form>
     </div>
 </div>

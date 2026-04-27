@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using simulationTest.Data;
 using simulationTest.Interfaces;
 using simulationTest.Models;
@@ -13,32 +13,83 @@ public class MedicineService : ICrudService<Medicine>
     {
         _context = context;
     }
-    
-    public  Medicine Create(Medicine entity)
+
+    public Medicine Create(Medicine entity)
     {
-        _context.medicines.Add(entity);
-        _context.SaveChanges();
-        return entity;
+        try
+        {
+            _context.medicines.Add(entity);
+            _context.SaveChanges();
+            return entity;
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new InvalidOperationException("Could not save medicine.", ex);
+        }
     }
 
     public async Task<IEnumerable<Medicine>> GetAllAsync()
     {
-        var medicines = await _context.medicines.ToListAsync();
-        return medicines;
+        try
+        {
+            return await _context.medicines.ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("Could not retrieve medicines.", ex);
+        }
     }
 
-    public Task<Medicine> GetByIdAsync(int id)
+    public async Task<Medicine> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var medicine = await _context.medicines.FindAsync(id)
+                ?? throw new KeyNotFoundException($"Medicine with id {id} not found.");
+            return medicine;
+        }
+        catch (KeyNotFoundException) { throw; }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("Could not retrieve medicine.", ex);
+        }
     }
 
-    public Task<Medicine> UpdateAsync(Medicine entity)
+    public async Task<Medicine> UpdateAsync(Medicine entity)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var existing = await _context.medicines.FindAsync(entity.Id)
+                ?? throw new KeyNotFoundException($"Medicine with id {entity.Id} not found.");
+
+            existing.Name = entity.Name;
+            existing.Stock = entity.Stock;
+
+            await _context.SaveChangesAsync();
+            return existing;
+        }
+        catch (KeyNotFoundException) { throw; }
+        catch (DbUpdateException ex)
+        {
+            throw new InvalidOperationException("Could not update medicine.", ex);
+        }
     }
 
-    public Task<Medicine> DeleteAsync(int id)
+    public async Task<Medicine> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var medicine = await _context.medicines.FindAsync(id)
+                ?? throw new KeyNotFoundException($"Medicine with id {id} not found.");
+
+            _context.medicines.Remove(medicine);
+            await _context.SaveChangesAsync();
+            return medicine;
+        }
+        catch (KeyNotFoundException) { throw; }
+        catch (DbUpdateException ex)
+        {
+            throw new InvalidOperationException("Could not delete medicine.", ex);
+        }
     }
 }
