@@ -1,0 +1,13 @@
+﻿@model Veterinary
+
+<div class="row">
+    <div class="col-12">
+        <form asp-controller="Veterinary" asp-action="Create" method="post">
+            <label asp-for="Name" for="" class="form-label">Name</label>
+            <input asp-for="Name" type="text" class="form-control">
+            <label asp-for="Speciality" for="" class="form-label">Speciality</label>
+            <input asp-for="Speciality" type="text" class="form-control">
+            <button class="btn btn-success">Create</button>
+        </form>
+    </div>
+</div>

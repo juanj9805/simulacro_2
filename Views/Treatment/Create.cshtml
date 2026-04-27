@@ -1,0 +1,30 @@
+@model Treatment
+
+<div class="row">
+    <div class="col-12">
+        <form asp-controller="Treatment" asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="IdConsultation" class="form-label">Consultation</label>
+                <select asp-for="IdConsultation" class="form-select">
+                    <option value="">Select a consultation</option>
+                    @foreach (var c in (IEnumerable<Consultation>)ViewBag.Consultations)
+                    {
+                        <option value="@c.Id">@c.Reason</option>
+                    }
+                </select>
+                <span asp-validation-for="IdConsultation" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <button class="btn btn-success">Create</button>
+            <a class="btn btn-secondary ms-2" asp-controller="Treatment" asp-action="Index">Cancel</a>
+        </form>
+    </div>
+</div>

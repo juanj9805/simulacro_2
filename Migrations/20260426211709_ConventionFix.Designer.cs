@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using simulationTest.Data;
 
@@ -11,9 +12,11 @@ using simulationTest.Data;
 namespace simulationTest.Migrations
 {
     [DbContext(typeof(MysqlDbcontext))]
-    partial class MysqlDbcontextModelSnapshot : ModelSnapshot
+    [Migration("20260426211709_ConventionFix")]
+    partial class ConventionFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,18 +45,21 @@ namespace simulationTest.Migrations
                     b.Property<int>("IdVeterinary")
                         .HasColumnType("int");
 
+                    b.Property<int>("PetId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Reason")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("VeterinaryId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdPet");
+                    b.HasIndex("PetId");
 
-                    b.HasIndex("IdVeterinary");
+                    b.HasIndex("VeterinaryId");
 
                     b.ToTable("consultations");
                 });
@@ -121,12 +127,12 @@ namespace simulationTest.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Species")
+                    b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdOwner");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("pets");
                 });
@@ -138,6 +144,9 @@ namespace simulationTest.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ConsultationId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime(6)");
@@ -151,7 +160,7 @@ namespace simulationTest.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdConsultation");
+                    b.HasIndex("ConsultationId");
 
                     b.ToTable("treatments");
                 });
@@ -170,11 +179,17 @@ namespace simulationTest.Migrations
                     b.Property<int>("IdTreatment")
                         .HasColumnType("int");
 
+                    b.Property<int>("MedicineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TreatmentId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("IdMedicine");
+                    b.HasIndex("MedicineId");
 
-                    b.HasIndex("IdTreatment");
+                    b.HasIndex("TreatmentId");
 
                     b.ToTable("treatmentsMedicines");
                 });
@@ -204,13 +219,13 @@ namespace simulationTest.Migrations
                 {
                     b.HasOne("simulationTest.Models.Pet", "Pet")
                         .WithMany()
-                        .HasForeignKey("IdPet")
+                        .HasForeignKey("PetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("simulationTest.Models.Veterinary", "Veterinary")
                         .WithMany()
-                        .HasForeignKey("IdVeterinary")
+                        .HasForeignKey("VeterinaryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -223,7 +238,7 @@ namespace simulationTest.Migrations
                 {
                     b.HasOne("simulationTest.Models.Owner", "Owner")
                         .WithMany("Pets")
-                        .HasForeignKey("IdOwner")
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -234,7 +249,7 @@ namespace simulationTest.Migrations
                 {
                     b.HasOne("simulationTest.Models.Consultation", "Consultation")
                         .WithMany()
-                        .HasForeignKey("IdConsultation")
+                        .HasForeignKey("ConsultationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -245,13 +260,13 @@ namespace simulationTest.Migrations
                 {
                     b.HasOne("simulationTest.Models.Medicine", "Medicine")
                         .WithMany()
-                        .HasForeignKey("IdMedicine")
+                        .HasForeignKey("MedicineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("simulationTest.Models.Treatment", "Treatment")
                         .WithMany()
-                        .HasForeignKey("IdTreatment")
+                        .HasForeignKey("TreatmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

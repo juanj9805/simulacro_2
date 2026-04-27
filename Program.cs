@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using simulationTest.Data;
+using simulationTest.Models;
+using simulationTest.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<MysqlDbcontext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("MysqlConnection"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MysqlConnection"))));
+
+builder.Services.AddScoped<OwnerService>();
+builder.Services.AddScoped<MedicineService>();
+builder.Services.AddScoped<PetService>();
+builder.Services.AddScoped<VeterinaryService>();
+builder.Services.AddScoped<ConsultationService>();
+builder.Services.AddScoped<TreatmentService>();
 
 var app = builder.Build();
 

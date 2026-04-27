@@ -1,0 +1,11 @@
+﻿@model Medicine
+
+<div class="row">
+    <div class="col-12">
+        <form asp-controller="Medicine" asp-action="Create" method="post">
+            <label asp-for="Name" for="" class="form-label">Name</label>
+            <input asp-for="Name" type="text" class="form-control">
+            <button class="btn btn-success">Create</button>
+        </form>
+    </div>
+</div>

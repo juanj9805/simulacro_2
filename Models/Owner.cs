@@ -1,4 +1,6 @@
-﻿namespace simulationTest.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace simulationTest.Models;
 
 public class Owner
 {

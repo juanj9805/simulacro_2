@@ -1,0 +1,13 @@
+﻿@model Owner
+
+<div class="row">
+    <div class="col-12">
+        <form asp-controller="Owner" asp-action="Create" method="post">
+            <label asp-for="Name" for="" class="form-label">Name</label>
+            <input asp-for="Name" type="text" class="form-control">
+            <label asp-for="Phone" for="" class="form-label">Phone</label>
+            <input asp-for="Phone" type="text" class="form-control">
+            <button class="btn btn-success">Create</button>
+        </form>
+    </div>
+</div>

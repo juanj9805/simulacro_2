@@ -1,0 +1,60 @@
+@model Consultation
+
+<div class="row">
+    <div class="col-12">
+        <form asp-controller="Consultation" asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Reason" class="form-label">Reason</label>
+                <input asp-for="Reason" type="text" class="form-control">
+                <span asp-validation-for="Reason" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="IdPet" class="form-label">Pet</label>
+                <select asp-for="IdPet" class="form-select">
+                    <option value="">Select a pet</option>
+                    @foreach (var pet in (IEnumerable<Pet>)ViewBag.Pets)
+                    {
+                        <option value="@pet.Id">@pet.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="IdPet" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="IdVeterinary" class="form-label">Veterinary</label>
+                <select asp-for="IdVeterinary" class="form-select">
+                    <option value="">Select a veterinary</option>
+                    @foreach (var vet in (IEnumerable<Veterinary>)ViewBag.Veterinaries)
+                    {
+                        <option value="@vet.Id">@vet.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="IdVeterinary" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DateStart" class="form-label">Date Start</label>
+                <input asp-for="DateStart" type="datetime-local" class="form-control">
+                <span asp-validation-for="DateStart" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DateEnd" class="form-label">Date End</label>
+                <input asp-for="DateEnd" type="datetime-local" class="form-control">
+                <span asp-validation-for="DateEnd" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Status" class="form-label">Status</label>
+                <select asp-for="Status" asp-items="Html.GetEnumSelectList<Status>()" class="form-select"></select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <button class="btn btn-success">Create</button>
+            <a class="btn btn-secondary ms-2" asp-controller="Consultation" asp-action="Index">Cancel</a>
+        </form>
+    </div>
+</div>
